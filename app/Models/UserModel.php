@@ -9,12 +9,12 @@ class UserModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'm_user'; // Nama tabel
-    protected $primaryKey = 'user_id'; // Primary key tabel
+    protected $table = 'm_user'; // Nama tabel di database
+    protected $primaryKey = 'user_id'; // Primary Key tabel
 
-    // Jika tabel tidak memiliki timestamps (created_at & updated_at)
+    // Definisi atribut yang bisa diisi secara massal
+    protected $fillable = ['level_id', 'username', 'nama', 'password'];
+
+    // Jika tabel tidak memiliki kolom timestamps (created_at & updated_at)
     public $timestamps = false;
-
-    // Definisikan kolom yang dapat diisi
-    protected $fillable = ['username', 'nama', 'level_id'];
 }

@@ -2,23 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserModel;
 use Illuminate\Http\Request;
+use App\Models\UserModel;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index()
     {
-        // Data yang akan diupdate
+        // Data yang akan dimasukkan
         $data = [
-            'nama' => 'Pelanggan Pertama'
+            'level_id' => 2,
+            'username' => 'manager tiga',
+            'nama' => 'Manager 3',
+            'password' => Hash::make('12345')
         ];
 
-        UserModel::where('username', 'customer-1')->update($data); // Update data user
+        // Insert data ke database
+        UserModel::create($data);
 
-        // Ambil semua data dari tabel m_user
+        // Mengambil semua data user
         $user = UserModel::all();
 
+        // Menampilkan data di view
         return view('user', ['data' => $user]);
     }
 }
