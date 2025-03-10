@@ -4,17 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\LevelModel; // Pastikan ada ini!
 
 class UserModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'm_user'; // Nama tabel di database
-    protected $primaryKey = 'user_id'; // Primary Key tabel
+    protected $table = 'm_user'; // Sesuaikan dengan nama tabel di database
+    protected $primaryKey = 'user_id';
 
-    // Definisi atribut yang bisa diisi secara massal
     protected $fillable = ['level_id', 'username', 'nama', 'password'];
 
-    // Jika tabel tidak memiliki kolom timestamps (created_at & updated_at)
-    public $timestamps = false;
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
+    }
 }

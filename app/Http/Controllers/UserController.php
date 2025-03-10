@@ -9,8 +9,14 @@ use App\Models\UserModel;
 
 class UserController extends Controller
 {
-    public function index() {
-        $user = UserModel::all();
+    public function index()
+    {
+        // Ambil semua data user dengan relasi ke level
+        $user = UserModel::with('level')->get();
+
+        // Cek data dengan debug dump (bisa dihapus setelah tes)
+        // dd($user); 
+        
         return view('user', ['data' => $user]);
     }
 
