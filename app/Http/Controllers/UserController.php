@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserModel;
+use App\Models\UserModel; // Pastikan menggunakan UserModel yang benar
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index() {
-        $user = UserModel::findOr(20, ['username', 'nama'], function () {
-            abort(404); // Jika user_id = 20 tidak ditemukan, tampilkan 404
-        });
+    public function index() 
+    {
+        $user = UserModel::where('username', 'manager')->firstOrFail();
         return view('user', ['data' => $user]);
     }
-    
 }
