@@ -8,7 +8,20 @@
 </head>
 <body>
     <h1>Data User</h1>
-    <p>Jumlah Pengguna: {{ $data }}</p> <!-- Menampilkan jumlah user dengan benar -->
+    <table border="1" cellpadding="2" cellspacing="0">
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Nama</th>
+            <th>Level Pengguna</th>
+        </tr>
+        <tr>
+            <td>{{ $data->id ?? 'Tidak Ada' }}</td>
+            <td>{{ $data->username ?? 'Tidak Ada' }}</td>
+            <td>{{ $data->nama ?? 'Tidak Ada' }}</td>
+            <td>{{ $data->level_id ?? 'Tidak Ada' }}</td>
+        </tr>
+    </table>
 </body>
 
 </html>
