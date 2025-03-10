@@ -3,41 +3,62 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserModel;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\UserModel;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        // Membuat user baru
-        $user = UserModel::create([
-            'username' => 'manager11',
-            'nama' => 'Manager 11',
-            'password' => Hash::make('12345'),
-            'level_id' => 2,
-        ]);
-
-        // Mengubah username
-        $user->username = 'manager12';
-
-        // Menyimpan perubahan
-        $user->save();
-
-        // Mengecek perubahan dengan wasChanged()
-        $wasChanged = $user->wasChanged(); // true
-        $wasChangedUsername = $user->wasChanged('username'); // true
-        $wasChangedMulti = $user->wasChanged(['username', 'level_id']); // true
-        $wasChangedName = $user->wasChanged('name'); // false
-        $wasChangedMultiCheck = $user->wasChanged(['name', 'username']); // true
-
-        // Debugging output
-        dd([
-            'wasChanged' => $wasChanged,
-            'wasChangedUsername' => $wasChangedUsername,
-            'wasChangedMulti' => $wasChangedMulti,
-            'wasChangedName' => $wasChangedName,
-            'wasChangedMultiCheck' => $wasChangedMultiCheck,
-        ]);
+    public function index() {
+        $user = UserModel::all();
+        return view('user', ['data' => $user]);
     }
+
+    public function tambah()
+    {
+        return view('user_tambah');
+    }
+
+    public function tambah_simpan(Request $request) {
+        UserModel::create([
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'password' => Hash::make($request->password),
+            'level_id' => $request->level_id
+        ]);
+    
+        return redirect('/user');
+    }
+
+    public function ubah($id) {
+        $user = UserModel::find($id);  // Pastikan nama model sesuai
+        return view('user_ubah', ['data' => $user]);
+    }
+
+    public function ubah_simpan(Request $request) {
+        $user = UserModel::find($request->user_id);
+        $user->username = $request->username;
+        $user->nama = $request->nama;
+        $user->level_id = $request->level_id;
+        
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+    
+        $user->save();
+    
+        return redirect('/user')->with('success', 'User berhasil diperbarui');
+    }
+    
+    public function hapus($id) {
+        $user = UserModel::find($id);
+        if ($user) {
+            $user->delete();
+            return redirect('/user')->with('success', 'User berhasil dihapus');
+        }
+        return redirect('/user')->with('error', 'User tidak ditemukan');
+    }
+    
+    
+    
 }
