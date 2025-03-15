@@ -1,9 +1,10 @@
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 @extends('adminlte::page')
 
-@section('title')
-    {{ config('adminlte.title') }}
-    @hasSection('subtitle') | @yield('subtitle') @endif
-@stop
+@section('title', config('adminlte.title', 'Admin Panel'))
 
 @vite('resources/js/app.js')
 
@@ -31,9 +32,25 @@
     </div>
     <strong>
         <a href="{{ config('app.company_url', '#') }}">
-            {{ config('app.company_name', 'My company') }}
+            {{ config('app.company_name', 'My Company') }}
         </a>
     </strong>
+@stop
+
+{{-- Sidebar Menu --}}
+@section('adminlte_sidebar')
+    <li class="nav-item">
+        <a href="{{ route('home') }}" class="nav-link">
+            <i class="nav-icon fas fa-home"></i>
+            <p>Dashboard</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('kategori.index') }}" class="nav-link">
+            <i class="nav-icon fas fa-list"></i>
+            <p>Manage Kategori</p>
+        </a>
+    </li>
 @stop
 
 @push('js')

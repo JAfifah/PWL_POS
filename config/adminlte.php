@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Afifah',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Afifah</b>SIB2F',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -327,6 +327,20 @@ return [
             'label' => 4,
             'label_color' => 'success',
         ],
+
+        // Sidebar items:
+        ['header' => 'MAIN NAVIGATION'],
+        [
+            'text' => 'Dashboard',
+            'url'  => '/home',
+            'icon' => 'fas fa-home',
+        ],
+        [
+            'text' => 'Manage Kategori',
+            'url'  => '/kategori',
+            'icon' => 'fas fa-list',
+        ],
+
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
