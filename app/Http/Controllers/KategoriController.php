@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KategoriModel;
-use Yajra\DataTables\Facades\DataTables;
 
 class KategoriController extends Controller
 {
@@ -13,9 +12,31 @@ class KategoriController extends Controller
         return view('kategori.index');
     }
 
+    public function create()
+    {
+        return view('kategori.create'); // Menampilkan form input kategori
+    }
+
+    public function store(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'kodekategori' => 'required|string|max:10',
+            'namakategori' => 'required|string|max:50',
+        ]);
+
+        // Simpan data ke database
+        KategoriModel::create([
+            'kategori_kode' => $request->kodekategori,
+            'kategori_nama' => $request->namakategori,
+        ]);
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
+    }
+
     public function data()
     {
-        $data = KategoriModel::select(['kategori_id', 'kategori_kode', 'kategori_nama', 'created_at']);
-        return DataTables::of($data)->make(true);
+        return datatables(KategoriModel::query())->toJson();
     }
+
 }

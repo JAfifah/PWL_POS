@@ -9,11 +9,10 @@ class KategoriModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'm_kategori'; // Sesuaikan dengan nama tabel di database
-    protected $primaryKey = 'kategori_id'; // Pastikan sesuai dengan primary key di tabel
-
-    public $incrementing = false; // Karena kategori_id bukan auto-increment
-    protected $keyType = 'string'; // Jika kategori_id berupa string
+    protected $table = 'm_kategori'; // Nama tabel di database
+    protected $primaryKey = 'kategori_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     public $timestamps = true; 
     const CREATED_AT = 'created_at'; 
