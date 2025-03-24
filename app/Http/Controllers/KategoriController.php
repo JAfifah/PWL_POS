@@ -3,43 +3,81 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\KategoriModel;
+use DataTables;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        // Menampilkan semua data dari tabel m_kategori
-        $data = DB::table('m_kategori')->get();
-        return view('kategori', ['data' => $data]);
+        return view('kategori.index');
     }
 
-    public function insert()
+    public function create()
     {
-        DB::table('m_kategori')->insert([
-            'kategori_kode' => 'SNK',
-            'kategori_nama' => 'Snack/Makanan Ringan',
-            'created_at' => now()
+        return view('kategori.create'); // Menampilkan form tambah kategori
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'kodekategori' => 'required|string|max:10',
+            'namakategori' => 'required|string|max:50',
         ]);
 
-        return "Insert data baru berhasil!";
+        KategoriModel::create([
+            'kategori_kode' => $request->kodekategori,
+            'kategori_nama' => $request->namakategori,
+        ]);
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
-    public function update()
+    public function data()
+{
+    $kategori = KategoriModel::select(['kategori_id', 'kategori_kode', 'kategori_nama']);
+
+    return DataTables::of($kategori)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+            return '
+                <a href="' . route('kategori.edit', $row->kategori_id) . '" class="btn btn-sm btn-warning">Edit</a>
+                <button class="btn btn-sm btn-danger delete-btn" data-id="' . $row->kategori_id . '">Delete</button>
+            ';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+}
+
+
+    public function edit($id)
     {
-        $row = DB::table('m_kategori')
-            ->where('kategori_kode', 'SNK')
-            ->update(['kategori_nama' => 'Camilan']);
-
-        return "Update data berhasil. Jumlah data yang diupdate: $row baris.";
+        $kategori = KategoriModel::findOrFail($id);
+        return view('kategori.edit', compact('kategori'));
     }
 
-    public function delete()
+    public function update(Request $request, $id)
     {
-        $row = DB::table('m_kategori')
-            ->where('kategori_kode', 'SNK')
-            ->delete();
+        $request->validate([
+            'kodekategori' => 'required|string|max:10',
+            'namakategori' => 'required|string|max:50',
+        ]);
 
-        return "Delete data berhasil. Jumlah data yang dihapus: $row baris.";
+        $kategori = KategoriModel::findOrFail($id);
+        $kategori->update([
+            'kategori_kode' => $request->kodekategori,
+            'kategori_nama' => $request->namakategori,
+        ]);
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui!');
     }
+
+    public function destroy($id)
+    {
+        $kategori = KategoriModel::findOrFail($id);
+        $kategori->delete();
+
+        return response()->json(['message' => 'Kategori berhasil dihapus!']);
+    }
+    
 }
