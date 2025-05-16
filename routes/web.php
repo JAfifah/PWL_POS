@@ -6,10 +6,17 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
+// Halaman Utama
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Route untuk Kategori
+Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
+
+
+// Route untuk Level
 Route::get('/level', [LevelController::class, 'index']);
 Route::get('/kategori', [KategoriController::class, 'index']);
 Route::get('/user', [UserController::class, 'index']);
